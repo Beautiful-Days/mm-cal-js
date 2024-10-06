@@ -1,0 +1,5 @@
+
+
+const getMyanmarDate = (date: Date) => {
+    
+}

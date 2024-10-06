@@ -1,0 +1,17 @@
+{
+  "devDependencies": {
+    "microbundle": "^0.15.1"
+  },
+  "name": "mm-cal-js",
+  "type": "module",
+  "source": "src/index.ts",
+  "exports": {
+    "default": "./dist/index.modern.js"
+  },
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.modern.js",
+  "scripts": {
+    "build": "microbundle",
+    "dev": "microbundle watch"
+  }
+}
