@@ -111,37 +111,27 @@ export const getMyanmarConstants = (myanmarYear: number) => {
 
 // Binary search for array with two elements
 const bSearch2 = (key: number, arr: number[][]) => {
-  let low = 0;
-  let high = arr.length - 1;
-
-  while (low <= high) {
-    let mid = (low + high) / 2;
-    if (arr[mid][0] == key) {
-      return mid;
-    } else if (arr[mid][0] < key) {
-      low = mid + 1;
-    } else {
-      high = mid - 1;
-    }
+  let i = 0;
+  let l = 0;
+  let u = arr.length - 1;
+  while (u >= l) {
+    i = Math.floor((l + u) / 2);
+    if (arr[i][0] > key) u = i - 1;
+    else if (arr[i][0] < key) l = i + 1;
+    else return i;
   }
-  // Key not found
   return -1;
 };
 
 const bSearch1 = (key: number, arr: number[]) => {
-  let low = 0;
-  let high = arr.length - 1;
-
-  while (low <= high) {
-    let mid = (low + high) / 2;
-    if (arr[mid] == key) {
-      return mid;
-    } else if (arr[mid] < key) {
-      low = mid + 1;
-    } else {
-      high = mid - 1;
-    }
+  let i = 0;
+  let l = 0;
+  let u = arr.length - 1;
+  while (u >= l) {
+    i = Math.floor((l + u) / 2);
+    if (arr[i] > key) u = i - 1;
+    else if (arr[i] < key) l = i + 1;
+    else return i;
   }
-  // Key not found
   return -1;
 };

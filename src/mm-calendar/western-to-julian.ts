@@ -46,7 +46,7 @@ export const westernToJulianDayNumber = (
       julianDay =
         date.getDate() +
         Math.floor((153 * month + 2) / 5.0) +
-        365 * year +
+        (365 * year )+
         Math.floor(year / 4.0) -
         32083;
       if (julianDay > startOfGregorian) {

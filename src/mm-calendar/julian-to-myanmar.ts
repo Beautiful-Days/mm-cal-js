@@ -29,23 +29,24 @@ export const julianToMyanmarDate = (julianDay: number) => {
   let yo = checkMyanmarYear(myanmarYear);
   // dd
   let dayCount = julianDayNumber - yo.tagu1 + 1;
-  let b = yo.myanmarYearType / 2;
+  let b =Math.floor( yo.myanmarYearType / 2);
   // big wa and common year
-  let c = 1 / yo.myanmarYearType + 1;
+  let c = Math.floor(1 / (yo.myanmarYearType + 1));
   // year length
   let yearLength = 354 + (1 - c) * 30 + b;
   // month type: Hnaung = 1 or Oo = 0 | late = 1 or early = 0
-  let monthType = dayCount - 1 / yearLength;
+  let monthType = Math.floor((dayCount -1)/yearLength);
   dayCount -= monthType * yearLength;
   // adjust day count and threshold
-  let a = (dayCount + 423) / 512;
+  let a = Math.floor((dayCount + 423) / 512);
   // month
   let month = Math.floor((dayCount - b * a + c * a * 30 + 29.26) / 29.544);
-  let e = (month + 12) / 16;
-  let f = (month + 11) / 16;
+  let e =Math.floor( (month + 12) / 16);
+  let f = Math.floor((month + 11) / 16);
   // day of month
   let monthDay =
     dayCount - Math.floor(29.544 * month - 29.26) - b * e + c * f * 30;
+    
   // adjust month numbers for late months
   month += f * 3 - e * 4 + 12 * monthType;
   let monthLength = 30 - (month % 2);
@@ -125,13 +126,13 @@ export const checkWatat = (myanmarYear: number) => {
       watat += 19;
     }
     watat = Math.floor(watat / 12.0);
-    // correct watat exceptions
-    watat = watat ^ myanmarConstants.ERA_ID;
-    return {
-      fullMoon, // fm
-      watat, // watat
-    };
   }
+  // correct watat exceptions
+  watat ^= myanmarConstants.EXCEPTION_IN_WATAT_YEAR;
+  return {
+    fullMoon, // fm
+    watat, // watat
+  };
 };
 
 /**
@@ -161,25 +162,27 @@ export const checkMyanmarYear = (myanmarYear: number) => {
     y1 = checkWatat(myanmarYear - yd);
   } while (y1!.watat === 0 && yd < 3);
 
-  let fullMoon: number;
+  let fullMoon: number = 0;
   let watatError = 0;
 
-  if (myanmarYearType > 0) {
+  if (myanmarYearType) {
     let nd = (y2!.fullMoon - y1!.fullMoon) % 354;
     myanmarYearType = Math.floor(nd / 31) + 1;
     fullMoon = y2!.fullMoon;
+    console.log("1", fullMoon);
     if (nd != 30 && nd != 31) {
       watatError = 1;
-    } else {
-      fullMoon = y1!.fullMoon + 354 * yd;
     }
+  } else {
+    fullMoon = y1!.fullMoon + 354 * yd;
+    console.log("2", fullMoon);
   }
 
   let tagu1 = y1!.fullMoon + 354 * yd - 102;
   return {
     myanmarYearType, // myt
     tagu1, // tg1
-    fullMoon: fullMoon!, // fm
+    fullMoon: fullMoon, // fm
     watatError, // werr
   };
 };
