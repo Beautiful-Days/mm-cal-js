@@ -39,8 +39,6 @@ console.log(getMyanmarDate(new Date(2000, 1, 1)));
   monthType: 0, // [0=Hnaung, 1=Oo]
   monthLength: 30, // [29 or 30]
   monthDay: 27, // [1 to 30]
-  moonPhase: 4.3375, // [0=waxing, 1=full moon, 2=waning, 3=new moon]
-  fortnightDay: 1.6875, // [1 to 15]
   weekDay: 3, // [0=sat, 1=sun, 2=mon, 3=tue, 4=wed, 5=thu, 6=fri]
   julianDay: 2451575.5
 }

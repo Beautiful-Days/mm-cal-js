@@ -72,8 +72,8 @@ export const julianToMyanmarDate = (julianDay: number) => {
     monthType,
     monthLength,
     monthDay,
-    moonPhase,
-    fortnightDay,
+    // moonPhase,
+    // fortnightDay,
     weekDay,
     julianDay,
   };
