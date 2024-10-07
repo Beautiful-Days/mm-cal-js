@@ -4,6 +4,7 @@
     "tsx": "^4.19.1"
   },
   "name": "mm-cal-js",
+  "description": "Myanmar calendar calculation library",
   "version": "0.1.6",
   "repository": {
     "type": "git",
