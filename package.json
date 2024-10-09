@@ -5,7 +5,7 @@
   },
   "name": "mm-cal-js",
   "description": "Myanmar calendar calculation library",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Beautiful-Days/mm-cal-js.git"

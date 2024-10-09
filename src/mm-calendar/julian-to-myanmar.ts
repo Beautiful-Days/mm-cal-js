@@ -169,13 +169,12 @@ export const checkMyanmarYear = (myanmarYear: number) => {
     let nd = (y2!.fullMoon - y1!.fullMoon) % 354;
     myanmarYearType = Math.floor(nd / 31) + 1;
     fullMoon = y2!.fullMoon;
-    console.log("1", fullMoon);
     if (nd != 30 && nd != 31) {
       watatError = 1;
     }
   } else {
     fullMoon = y1!.fullMoon + 354 * yd;
-    console.log("2", fullMoon);
+
   }
 
   let tagu1 = y1!.fullMoon + 354 * yd - 102;
