@@ -1,4 +1,4 @@
-import { GREGORIAN_START_IN_ENGLISH_CAL } from "./constants";
+import { GREGORIAN_START_IN_ENGLISH_CAL } from "./constants.js";
 
 export enum CalendarType {
   English = 0,

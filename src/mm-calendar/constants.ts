@@ -129,3 +129,8 @@ export const WEEK_DAYS: string[] = [
   "Thursday",
   "Friday",
 ];
+/**
+ * Beginning of thingyan
+ * BGNTG
+ */
+export const BEGINNING_OF_THINGYAN: number = 1100;
