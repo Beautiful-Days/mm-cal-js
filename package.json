@@ -30,6 +30,6 @@
   "scripts": {
     "build": "microbundle",
     "dev": "microbundle watch",
-    "test": "tsx --test --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=test/lcov.info "
+    "test-holidays": "tsx --test --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=test/holidays-lcov.info "
   }
 }

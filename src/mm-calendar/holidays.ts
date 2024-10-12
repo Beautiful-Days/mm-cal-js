@@ -127,7 +127,6 @@ export const holidays: Holidays = {
 	/**
 	 * Convert Gregorian date to Julian Day Number(JDN) .
 	 *  Algorithms from Astronomical Algorithms (Meeus) and taking into account secular difference
-	 * @see https://www.npmjs.com/package/astronomia
 	 * @param year year
 	 * @param month month [1-12]
 	 * @param day date [1-31]
@@ -179,7 +178,7 @@ export const holidays: Holidays = {
 	 * Get Myanmar month type and moon phase from Julian Day Number and Myanmar date
 	 * @param jd Julian Day Number
 	 * @param md Myanmar date [1-30]
-	 * @returns {mmt: 0 | 1, mp: 0 | 1 | 2 | 3} - Myanmar month type and moon phase
+	 * @returns  Myanmar month type and moon phase
 	 */
 	mpmt(
 		jd: number,
@@ -205,23 +204,26 @@ export const holidays: Holidays = {
 	 */
 	myanmarToJdn(my: number, mm: number, md: number): number {
 		const { myanmarYearType, tagu1 } = checkMyanmarYear(my);
-		// NOTE :
-		const mmt = mm >> 4;
-		// 0-14 to 1-14
-		const _mm = mm & 15;
-		// b is 1 if the year is a big watat year, else common year
-		// big watat year = little watat year + 1 day
+		/*
+	This function/method is not standalone and part of
+	a conversion process. The following mmt (Myanmar Month Type) is
+	not the calculation of mmt, to determine type of mm from input mm's index
+	as an implementation of this algorithm.
+    */
+		const mmt = Math.floor(mm / 13);
+		const _mm = (mm % 13) + mmt;
 		const b = myanmarYearType >> 1;
-		// c is 1 if the year is a little watat year, else common year
-		const c = myanmarYearType & 1;
-		// The total number of days
+		const c = myanmarYearType === 1 || myanmarYearType === 2 ? 0 : 1;
+		const _mm2 =
+			_mm + 4 - Math.floor((_mm + 15) / 16) * 4 + Math.floor((_mm + 12) / 16);
 		const _dd =
 			md +
-			Math.floor(29.544 * (_mm + 4 - Math.floor((_mm + 15) / 16) * 4) - 29.26) -
-			c * Math.floor((_mm + 11) / 16) * 30 +
-			b * Math.floor((_mm + 12) / 16);
-		// adjusted for Myanmar month type 'mmt' by using Myanmar year length, that is (354 + (1 - c) * 30 + b)
-		return _dd + mmt * (354 + (1 - c) * 30 + b) + tagu1 - 1;
+			Math.floor(29.544 * _mm2 - 29.26) -
+			c * Math.floor((_mm2 + 11) / 16) * 30 +
+			b * Math.floor((_mm2 + 12) / 16);
+		const myl = 354 + (1 - c) * 30 + b;
+		const dd = _dd + mmt * myl;
+		return dd + tagu1 - 1;
 	},
 
 	/**
@@ -232,16 +234,17 @@ export const holidays: Holidays = {
 	 * @returns Thingyan Holidays
 	 */
 	thingyanHolidays(jdn: number, my: number, mmt: number) {
-		const atatTime = SOLAR_YEAR * (my + mmt) + MYANMAR_ERA_START;
+		const y = my + mmt;
+		const atatTime = SOLAR_YEAR * y + MYANMAR_ERA_START;
 		const akyaTime =
 			my >= THIRD_ERA_START ? atatTime - 2.169918982 : atatTime - 2.1675;
-		const atatNay = Math.floor(atatTime);
-		const akyaNay = Math.floor(akyaTime);
+		const atatNay = Math.round(atatTime);
+		const akyaNay = Math.round(akyaTime);
 		const hs: string[] = [];
 		if (jdn === atatNay + 1) {
 			hs.push("Myanmar New Year's Day");
 		}
-		if (my + mmt >= BEGINNING_OF_THINGYAN) {
+		if (y >= BEGINNING_OF_THINGYAN) {
 			if (jdn === atatNay) {
 				hs.push("Thingyan Atat");
 			} else if (jdn > akyaNay && jdn < atatNay) {
@@ -250,26 +253,31 @@ export const holidays: Holidays = {
 				hs.push("Thingyan Akya");
 			} else if (jdn === akyaNay - 1) {
 				hs.push("Thingyan Akyo");
-				// NOTE : extra thingyan holidays depend on government , need to be adjust
-			} else if (
-				my + mmt >= 1369 &&
-				my + mmt < 1379 &&
-				(jdn === akyaNay - 2 || (jdn >= atatNay + 2 && jdn <= akyaNay + 7))
-			) {
-				hs.push("Holiday");
-			} else if (
-				my + mmt >= 1384 &&
-				my + mmt <= 1385 &&
-				(jdn === akyaNay - 5 ||
-					jdn === akyaNay - 4 ||
-					jdn === akyaNay - 3 ||
-					jdn === akyaNay - 2)
-			) {
-				hs.push("Holiday");
-			} else if (my + mmt >= 1386 && jdn >= atatNay + 2 && jdn <= akyaNay + 7) {
-				hs.push("Holiday");
 			}
 		}
+		// Extra Thingyan Holidays
+		// 2007 to 2016
+		if (
+			y >= 1369 &&
+			y <= 1379 &&
+			(jdn === akyaNay - 2 || (jdn >= atatNay + 2 && jdn <= akyaNay + 7))
+		)
+			hs.push("Thingyan Holiday");
+		// 2022 and 2023
+		if (
+			y >= 1384 &&
+			y <= 1385 &&
+			(jdn === akyaNay - 5 ||
+				jdn === akyaNay - 4 ||
+				jdn === akyaNay - 3 ||
+				jdn === akyaNay - 2)
+		)
+			hs.push("Thingyan Holiday");
+		// 2024 =>
+		if (y >= 1386 && jdn >= atatNay + 2 && jdn <= akyaNay + 7)
+			hs.push("Thingyan Holiday");
+
+		// TODO : check for extra holidays for thingyan
 		return hs;
 	},
 	/**
@@ -332,8 +340,17 @@ export const holidays: Holidays = {
  * Public Holidays of Myanmar
  * @param {Date} date JS Date Object
  * @returns {string[]} Array of public holidays in English
+ *
+ * @example
+ *
+ * ```ts
+ * import { publicHolidays } from "mm-cal-js";
+ *
+ * console.log(publicHolidays(new Date(2000, 0, 4)));
+ *
+ * ```
  */
-export default function publicHolidays(date: Date): string[] {
+export function publicHolidays(date: Date): string[] {
 	const year = date.getFullYear();
 	const month = date.getMonth() + 1;
 	const day = date.getDate();
