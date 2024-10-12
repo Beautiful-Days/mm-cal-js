@@ -53,7 +53,7 @@ console.log(isSabbath(new Date()));
 // output: [1=Sabbath, 2=Sabbath Eve, 0=else]
 ```
 
-## Documenation
+## Documentation
 The code is very well-documented. I suggest you explore into the source code. You can also read more about the implementation details [here](https://cool-emerald.blogspot.com/2013/06/algorithm-program-and-calculation-of.html).
 
 Essentially, the Gregorian date is converted into Julian day number, and it's converted into Myanmar date.

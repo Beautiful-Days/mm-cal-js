@@ -1,7 +1,8 @@
 {
   "devDependencies": {
-    "microbundle": "^0.15.1",
-    "tsx": "^4.19.1"
+    "@types/node": "^22.7.5",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3"
   },
   "name": "mm-cal-js",
   "description": "Myanmar calendar calculation library",
@@ -26,9 +27,9 @@
     "dist",
     "src"
   ],
-
   "scripts": {
     "build": "microbundle",
-    "dev": "microbundle watch"
+    "dev": "microbundle watch",
+    "test-holidays": "tsx --test --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=test/holidays-lcov.info "
   }
 }

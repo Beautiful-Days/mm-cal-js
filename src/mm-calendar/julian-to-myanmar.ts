@@ -1,5 +1,5 @@
-import { LUNAR_MONTH, MYANMAR_ERA_START, SOLAR_YEAR } from "./constants";
-import { getMyanmarConstants } from "./myanmar-year-constants";
+import { LUNAR_MONTH, MYANMAR_ERA_START, SOLAR_YEAR } from "./constants.js";
+import { getMyanmarConstants } from "./myanmar-year-constants.js";
 
 /**
  * Julian day number to Myanmar date

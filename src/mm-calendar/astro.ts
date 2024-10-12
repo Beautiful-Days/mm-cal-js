@@ -1,4 +1,4 @@
-import { getMyanmarDate } from "./myanmar-date";
+import { getMyanmarDate } from "./myanmar-date.js";
 
 /**
  * Checking Astrological days
